@@ -1,7 +1,5 @@
 <template>
-  <Layout 
-    title="About User Directory"
-    description="Learn more about this Vue3 application and its features"
+  <Layout
   >
     <!-- Main Content Area -->
     <div class="w-full bg-white">

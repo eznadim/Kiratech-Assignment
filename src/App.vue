@@ -3,30 +3,26 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <div id="app" class="min-h-screen bg-white w-full m-0 p-0">
-    <main class="w-full m-0 p-0">
+  <div id="app">
+    <main>
       <RouterView />
     </main>
   </div>
 </template>
 
 <style>
-/* Reset body styles completely */
+/* Remove all conflicting background rules */
 body {
   background-color: white !important;
-  background: white !important;
-  display: block !important;
-  place-items: unset !important;
   margin: 0 !important;
   padding: 0 !important;
   min-height: 100vh !important;
   color: var(--color-text) !important;
 }
 
-/* Also reset html */
+/* Remove duplicate background rules */
 html {
   background-color: white !important;
-  background: white !important;
 }
 
 /* Global styles */

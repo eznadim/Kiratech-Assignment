@@ -24,24 +24,26 @@
           </div>
         </div>
         
-        <!-- Right side: Gender, Age (table-like columns) -->
+        <!-- Right side: Data values only (table-like columns) -->
         <div class="flex items-center space-x-6 sm:space-x-8 lg:space-x-12 xl:space-x-16 flex-shrink-0">
+          <!-- Date -->
+          <div class="text-center min-w-[100px] lg:min-w-[120px] hidden md:block">
+            <p class="text-sm lg:text-base font-medium text-gray-900">{{ formatDate(user.registered.date) }}</p>
+          </div>
+          
           <!-- Gender -->
           <div class="text-center min-w-[60px] lg:min-w-[80px] hidden sm:block">
-            <p class="text-xs lg:text-sm text-gray-500 uppercase tracking-wide">Gender</p>
             <p class="text-sm lg:text-base font-medium text-gray-900 capitalize">{{ user.gender }}</p>
           </div>
           
-          <!-- Age -->
-          <div class="text-center min-w-[50px] lg:min-w-[60px]">
-            <p class="text-xs lg:text-sm text-gray-500 uppercase tracking-wide">Age</p>
-            <p class="text-sm sm:text-base lg:text-lg font-medium text-gray-900">{{ user.dob.age }}</p>
+          <!-- Country -->
+          <div class="text-center min-w-[80px] lg:min-w-[100px] xl:min-w-[120px] hidden lg:block">
+            <p class="text-sm lg:text-base font-medium text-gray-900 truncate">{{ user.location.country }}</p>
           </div>
           
-          <!-- Country (hidden on small screens) -->
-          <div class="text-center min-w-[80px] lg:min-w-[100px] xl:min-w-[120px] hidden lg:block">
-            <p class="text-xs lg:text-sm text-gray-500 uppercase tracking-wide">Country</p>
-            <p class="text-sm lg:text-base font-medium text-gray-900 truncate">{{ user.location.country }}</p>
+          <!-- Email (shown only on larger screens) -->
+          <div class="text-center min-w-[120px] lg:min-w-[140px] xl:min-w-[160px] hidden xl:block">
+            <p class="text-sm lg:text-base font-medium text-gray-900 truncate">{{ user.email }}</p>
           </div>
         </div>
       </div>
@@ -59,4 +61,13 @@ defineProps<{
 defineEmits<{
   selectUser: [user: User];
 }>();
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
+};
 </script> 

@@ -1,10 +1,37 @@
 <template>
   <Layout>
-    <!-- Controls Section -->
-    <div class="w-full bg-white border-b border-gray-200 py-4">
+    <!-- Blue Banner Section - Modified -->
+    <div class="w-full bg-cyan-400 pt-8 relative overflow-visible">
+      <div class="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 flex flex-col sm:flex-row sm:items-end sm:space-x-8 relative">
+        <img
+           src="@/assets/Avatar.png"
+          alt="John Doe"
+          class="w-60 h-60 object-cover z-20 -mb-16"
+        />
+        <div class="flex flex-col items-center sm:items-start mt-4 sm:mt-0 sm:ml-4 pb-8"> 
+          <h1 class="text-white text-3xl font-bold mb-2">John Doe</h1>
+          <p class="text-white text-opacity-80 mb-4">Last online: 2 days ago</p>
+          <div class="flex space-x-4">
+            <button class="flex items-center px-5 py-2 bg-white text-cyan-500 font-semibold rounded-md shadow hover:bg-gray-100 transition">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+              Send Message
+            </button>
+            <button class="flex items-center px-5 py-2 border-2 border-white text-white font-semibold rounded-md hover:bg-white hover:text-cyan-500 transition">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              Add Friend
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full bg-white border-b border-gray-200 pt-20 pb-6">
       <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
-          <!-- Search bar -->
           <div class="relative flex-1 w-full sm:max-w-md lg:max-w-lg xl:max-w-xl">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
               <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,9 +46,7 @@
             />
           </div>
 
-          <!-- Sort and Controls -->
           <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <!-- Sort dropdown -->
             <div class="relative z-20">
               <select
                 v-model="sortCriteria"
@@ -29,6 +54,8 @@
                 style="background-color: white; color: #111827;"
               >
                 <option value="" style="background-color: white; color: #111827;">Sort by...</option>
+                <option value="date" style="background-color: white; color: #111827;">Date (Newest First)</option>
+                <option value="date-desc" style="background-color: white; color: #111827;">Date (Oldest First)</option>
                 <option value="name" style="background-color: white; color: #111827;">Name (A-Z)</option>
                 <option value="name-desc" style="background-color: white; color: #111827;">Name (Z-A)</option>
                 <option value="age" style="background-color: white; color: #111827;">Age (Low-High)</option>
@@ -43,7 +70,6 @@
               </div>
             </div>
 
-            <!-- Refresh button -->
             <button
               @click="refreshUsers"
               :disabled="loading"
@@ -63,7 +89,6 @@
           </div>
         </div>
 
-        <!-- Results count and pagination info -->
         <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div class="text-xs sm:text-sm text-gray-600">
             Showing {{ sortedAndFilteredUsers.length }} of {{ users.length }} users (Page {{ currentPage }})
@@ -78,70 +103,121 @@
       </div>
     </div>
 
-    <!-- Main Content Area -->
     <div class="w-full bg-white">
-      <!-- Loading state -->
-      <div v-if="loading && users.length === 0" class="flex justify-center items-center py-12">
-        <div class="text-center">
-          <svg class="animate-spin h-6 w-6 sm:h-8 sm:w-8 text-blue-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
-          <p class="text-sm sm:text-base text-gray-500">Loading users...</p>
+      <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+        <div v-if="loading && users.length === 0" class="flex justify-center items-center py-12">
+          <div class="text-center">
+            <svg class="animate-spin h-6 w-6 sm:h-8 sm:w-8 text-blue-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            <p class="text-sm sm:text-base text-gray-500">Loading users...</p>
+          </div>
         </div>
-      </div>
 
-      <!-- Error state -->
-      <div v-else-if="error" class="text-center py-12">
-        <div class="text-red-600 mb-4">
-          <svg class="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-          </svg>
+        <div v-else-if="error" class="text-center py-12">
+          <div class="text-red-600 mb-4">
+            <svg class="h-10 w-10 sm:h-12 sm:w-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+            </svg>
+          </div>
+          <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">Failed to load users</h3>
+          <p class="text-sm sm:text-base text-gray-500 mb-4">{{ error }}</p>
+          <button
+            @click="() => fetchUsers()"
+            class="inline-flex items-center px-3 sm:px-4 py-2 border border-transparent rounded-md shadow-sm text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Try Again
+          </button>
         </div>
-        <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">Failed to load users</h3>
-        <p class="text-sm sm:text-base text-gray-500 mb-4">{{ error }}</p>
-        <button
-          @click="() => fetchUsers()"
-          class="inline-flex items-center px-3 sm:px-4 py-2 border border-transparent rounded-md shadow-sm text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          Try Again
-        </button>
-      </div>
 
-      <!-- Users full-width list -->
-      <div v-else-if="sortedAndFilteredUsers.length > 0" class="w-full">
-        <UserCard
-          v-for="user in sortedAndFilteredUsers"
-          :key="user.login.uuid"
-          :user="user"
-          @select-user="selectUser"
-        />
-      </div>
-
-      <!-- No results -->
-      <div v-else-if="searchQuery && sortedAndFilteredUsers.length === 0" class="text-center py-12">
-        <div class="text-gray-400 mb-4">
-          <svg class="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-          </svg>
+        <div v-else-if="sortedAndFilteredUsers.length > 0" class="w-full">
+          <!-- Table Structure -->
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+              <!-- Table Header -->
+              <thead>
+                <tr class="bg-gray-50 border-b border-gray-300">
+                  <th class="px-4 sm:px-6 lg:px-8 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wide">Name</th>
+                  <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600 uppercase tracking-wide hidden md:table-cell">Date</th>
+                  <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600 uppercase tracking-wide hidden sm:table-cell">Gender</th>
+                  <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600 uppercase tracking-wide hidden lg:table-cell">Country</th>
+                  <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600 uppercase tracking-wide hidden xl:table-cell">Email</th>
+                </tr>
+              </thead>
+              <!-- Table Body -->
+              <tbody>
+                <tr 
+                  v-for="user in sortedAndFilteredUsers" 
+                  :key="user.login.uuid"
+                  class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+                  @click="selectUser(user)"
+                >
+                  <!-- Name Column -->
+                  <td class="px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
+                    <div class="flex items-center space-x-3 sm:space-x-4">
+                      <img
+                        :src="user.picture.medium"
+                        :alt="`${user.name.first} ${user.name.last}`"
+                        class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full object-cover flex-shrink-0"
+                      />
+                      <div class="min-w-0">
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900 truncate">
+                          {{ user.name.title }} {{ user.name.first }} {{ user.name.last }}
+                        </h3>
+                        <p class="text-sm text-gray-600 truncate">{{ user.email }}</p>
+                        <p class="text-xs text-gray-500 truncate">
+                          {{ user.location.city }}, {{ user.location.country }}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  
+                  <!-- Date Column -->
+                  <td class="px-4 py-4 text-center text-sm font-medium text-gray-900 hidden md:table-cell">
+                    {{ formatDate(user.registered.date) }}
+                  </td>
+                  
+                  <!-- Gender Column -->
+                  <td class="px-4 py-4 text-center text-sm font-medium text-gray-900 capitalize hidden sm:table-cell">
+                    {{ user.gender }}
+                  </td>
+                  
+                  <!-- Country Column -->
+                  <td class="px-4 py-4 text-center text-sm font-medium text-gray-900 hidden lg:table-cell">
+                    {{ user.location.country }}
+                  </td>
+                  
+                  <!-- Email Column -->
+                  <td class="px-4 py-4 text-center text-sm font-medium text-gray-900 truncate hidden xl:table-cell">
+                    {{ user.email }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">No users found</h3>
-        <p class="text-sm sm:text-base text-gray-500">Try adjusting your search criteria</p>
+
+        <div v-else-if="searchQuery && sortedAndFilteredUsers.length === 0" class="text-center py-12">
+          <div class="text-gray-400 mb-4">
+            <svg class="h-10 w-10 sm:h-12 sm:w-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">No users found</h3>
+          <p class="text-sm sm:text-base text-gray-500">Try adjusting your search criteria</p>
+        </div>
       </div>
     </div>
 
-    <!-- Pagination Controls -->
     <div class="w-full bg-white border-t border-gray-200 py-4">
       <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <!-- Page info -->
           <div class="text-sm text-gray-700 text-center lg:text-left">
             Page <span class="font-medium">{{ currentPage }}</span> 
             <span class="hidden sm:inline">of users from RandomUser API</span>
           </div>
 
-          <!-- Pagination buttons -->
           <div class="flex items-center justify-center space-x-1">
-            <!-- Previous button -->
             <button
               @click="goToPage(currentPage - 1)"
               :disabled="currentPage <= 1 || loading"
@@ -153,7 +229,6 @@
               </svg>
             </button>
 
-            <!-- Page numbers -->
             <template v-for="page in visiblePages" :key="page">
               <button
                 v-if="page !== '...'"
@@ -176,7 +251,6 @@
               </span>
             </template>
 
-            <!-- Next button -->
             <button
               @click="goToPage(currentPage + 1)"
               :disabled="loading"
@@ -188,7 +262,6 @@
               </svg>
             </button>
 
-            <!-- Jump to page input -->
             <div class="hidden lg:flex items-center ml-4 space-x-2">
               <span class="text-sm text-gray-500">Go to:</span>
               <input
@@ -212,7 +285,6 @@
       </div>
     </div>
 
-    <!-- User Modal -->
     <UserModal
       :is-open="modalOpen"
       :user="selectedUser"
@@ -268,6 +340,10 @@ const sortedAndFilteredUsers = computed(() => {
 
   const sorted = [...filtered].sort((a, b) => {
     switch (sortCriteria.value) {
+      case 'date':
+        return new Date(b.registered.date).getTime() - new Date(a.registered.date).getTime();
+      case 'date-desc':
+        return new Date(a.registered.date).getTime() - new Date(b.registered.date).getTime();
       case 'name':
         return `${a.name.first} ${a.name.last}`.localeCompare(`${b.name.first} ${b.name.last}`);
       case 'name-desc':
@@ -326,6 +402,8 @@ const visiblePages = computed(() => {
 // Get sort label for display
 const getSortLabel = (criteria: string) => {
   const labels: Record<string, string> = {
+    'date': 'Date (Newest First)',
+    'date-desc': 'Date (Oldest First)',
     'name': 'Name (A-Z)',
     'name-desc': 'Name (Z-A)',
     'age': 'Age (Low-High)',
@@ -334,6 +412,16 @@ const getSortLabel = (criteria: string) => {
     'country': 'Country'
   };
   return labels[criteria] || criteria;
+};
+
+// Format date function
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
 };
 
 // Fetch users from API with pagination
@@ -426,4 +514,4 @@ div {
 .xl\:h-18 {
   height: 4.5rem;
 }
-</style> 
+</style>
